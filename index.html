@@ -27,7 +27,7 @@
       </form>
 
       <div class="topbar__actions">
-        <button class="cart-button" id="cart-button" type="button">🛒 Carrinho <b id="cart-count">0</b></button>
+        <button class="cart-button" id="cart-button" type="button">Carrinho <b id="cart-count">0</b></button>
       </div>
     </div>
   </header>
@@ -36,12 +36,12 @@
     <section class="hero">
       <div class="hero__copy">
         <span class="eyebrow">MARKETPLACE EXPERIMENTAL</span>
-        <h1>Computação sem complicação.<br><em>E um pouco de caos.</em></h1>
+        <h1>Computação sem complicação.<br><em>Do jeito certo.</em></h1>
         <p>Um catálogo modular onde hardware, periféricos, software e coisas aleatórias vivem no mesmo lugar.</p>
         <div class="hero__tags">
-          <span>⚡ Ofertas rápidas</span>
-          <span>🧩 Catálogo modular</span>
-          <span>🧪 Projeto de concurso</span>
+          <span>Ofertas rápidas</span>
+          <span>Catálogo modular</span>
+          <span>Projeto de concurso</span>
         </div>
       </div>
       <div class="hero__visual" aria-hidden="true">
@@ -65,7 +65,7 @@
         <div id="category-list" class="category-list"></div>
 
         <div class="sidebar__card">
-          <span class="sidebar__card-icon">🧩</span>
+          <span class="sidebar__card-icon">CM</span>
           <strong>Arquitetura por plugins</strong>
           <p>As categorias e produtos são adicionados por módulos independentes.</p>
         </div>
@@ -89,7 +89,6 @@
           </label>
         </div>
 
-        <div id="plugin-strip" class="plugin-strip"></div>
         <div id="product-grid" class="product-grid"></div>
 
         <section id="external-links-section" class="external-links-section" hidden>
@@ -104,7 +103,7 @@
         </section>
 
         <div id="empty-state" class="empty-state" hidden>
-          <div>🛰️</div>
+          <div class="empty-state__mark">—</div>
           <h3>Nada encontrado</h3>
           <p>Tente outro termo ou limpe os filtros.</p>
           <button id="empty-clear" class="primary-button" type="button">Ver tudo</button>
@@ -130,15 +129,40 @@
   </aside>
   <div id="drawer-backdrop" class="drawer-backdrop"></div>
 
-  <dialog id="plugin-dialog" class="plugin-dialog">
-    <div class="drawer__header">
-      <div><span class="eyebrow">EXTENSÕES</span><h2>Plugins carregados</h2></div>
-      <button id="close-plugin-dialog" class="close-button" type="button">×</button>
-    </div>
-    <div id="plugin-list" class="plugin-list"></div>
-  </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-brand">
+        <div class="brand__mark">CM</div>
+        <div>
+          <strong>Central Market</strong>
+          <span>TECH MARKET</span>
+        </div>
+      </div>
+      <div class="footer-column">
+        <span class="footer-title">Navegação</span>
+        <a href="#catalog-section">Catálogo</a>
+        <a href="./admin.html">Painel</a>
+      </div>
+      <div class="footer-column">
+        <span class="footer-title">Categorias</span>
+        <span>Hardware</span>
+        <span>Periféricos</span>
+        <span>Software</span>
+      </div>
+      <div class="footer-column">
+        <span class="footer-title">Central Market</span>
+        <span>Marketplace experimental</span>
+        <span>Links externos de lojas</span>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>Central Market · Projeto experimental</span>
+      <span>Produtos e ofertas pertencem às suas respectivas lojas.</span>
+    </div>
+  </footer>
 
   <script src="./plugins/core.js"></script>
   <script src="./plugins/manifest.js"></script>
