@@ -10,7 +10,7 @@
 
   const $ = (id) => document.getElementById(id);
   const money = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-  const uniqueCategories = () => [{ id: 'all', name: 'Todos', icon: '✦', pluginId: null }, ...SiteAleatorio.categories()];
+  const uniqueCategories = () => [{ id: 'all', name: 'Todos', icon: 'ALL', pluginId: null }, ...SiteAleatorio.categories()];
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -27,7 +27,6 @@
       await loadScript(src);
     }
     state.pluginsReady = true;
-    renderPluginUI();
     renderCategories();
     renderProducts();
     await loadExternalLinks();
@@ -166,34 +165,6 @@
     });
   }
 
-  function renderPluginUI() {
-    const plugins = SiteAleatorio.all();
-    const pluginCount = $('plugin-count');
-    if (pluginCount) pluginCount.textContent = plugins.length;
-    $('plugin-strip').innerHTML = plugins.map(plugin => `
-      <button class="plugin-pill" data-plugin-category="${plugin.id}" type="button">
-        ${plugin.icon} ${plugin.name}
-      </button>
-    `).join('');
-    $('plugin-list').innerHTML = plugins.map(plugin => `
-      <div class="plugin-row">
-        <span class="plugin-row__icon">${plugin.icon}</span>
-        <div><strong>${plugin.name}</strong><p>${plugin.description}</p></div>
-        <span class="plugin-row__version">v${plugin.version}</span>
-      </div>
-    `).join('');
-
-    document.querySelectorAll('[data-plugin-category]').forEach(button => {
-      button.addEventListener('click', () => {
-        const plugin = SiteAleatorio.all().find(item => item.id === button.dataset.pluginCategory);
-        state.category = plugin?.categories?.[0]?.id || 'all';
-        renderCategories();
-        renderProducts();
-        window.scrollTo({ top: $('catalog-section').offsetTop - 20, behavior: 'smooth' });
-      });
-    });
-  }
-
   function saveCart() {
     localStorage.setItem('sitealeatorio-cart', JSON.stringify(state.cart));
   }
@@ -242,7 +213,7 @@
           <button class="cart-item__remove" data-cart-remove="${product.id}" type="button">×</button>
         </div>
       </div>
-    `).join('') : '<div class="cart-empty">🛒<strong>Seu carrinho está vazio.</strong><span>Adicione alguma coisa estranhamente tecnológica.</span></div>';
+    `).join('') : '<div class="cart-empty"><strong>Seu carrinho está vazio.</strong><span>Adicione um produto ao catálogo.</span></div>';
 
     document.querySelectorAll('[data-cart-minus]').forEach(button => button.addEventListener('click', () => changeQuantity(button.dataset.cartMinus, -1)));
     document.querySelectorAll('[data-cart-plus]').forEach(button => button.addEventListener('click', () => changeQuantity(button.dataset.cartPlus, 1)));
