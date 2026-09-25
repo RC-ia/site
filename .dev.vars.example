@@ -1,0 +1,3 @@
+ADMIN_PASSWORD=admin123
+SESSION_SECRET=troque-este-segredo
+# No desenvolvimento com Wrangler, configure também o KV binding LINKS_KV.
