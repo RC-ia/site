@@ -2,12 +2,12 @@ SiteAleatorio.register({
   id: 'software',
   name: 'Software & Serviços',
   version: '1.0.0',
-  icon: '💿',
+  icon: 'SW',
   description: 'Licenças, ferramentas e serviços digitais.',
   categories: [
-    { id: 'os', name: 'Sistemas', icon: '🪟' },
-    { id: 'dev', name: 'Desenvolvimento', icon: '🧑‍💻' },
-    { id: 'cloud', name: 'Cloud', icon: '☁️' },
+    { id: 'os', name: 'Sistemas', icon: 'OS' },
+    { id: 'dev', name: 'Desenvolvimento', icon: 'DEV' },
+    { id: 'cloud', name: 'Cloud', icon: 'CLD' },
   ],
   products: [],
 });
