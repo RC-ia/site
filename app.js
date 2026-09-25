@@ -173,7 +173,7 @@
     state.cart[id] = (state.cart[id] || 0) + 1;
     saveCart();
     renderProducts();
-    renderCart();
+    updateCartCount();
     showToast('Produto adicionado ao carrinho');
   }
 
@@ -190,40 +190,6 @@
     saveCart();
     renderProducts();
     renderCart();
-  }
-
-  function renderCart() {
-    const products = SiteAleatorio.products();
-    const entries = Object.entries(state.cart)
-      .map(([id, quantity]) => ({ product: products.find(p => p.id === id), quantity }))
-      .filter(entry => entry.product);
-    const count = entries.reduce((sum, entry) => sum + entry.quantity, 0);
-    const total = entries.reduce((sum, entry) => sum + entry.product.price * entry.quantity, 0);
-    $('cart-count').textContent = count;
-    $('cart-total').textContent = money(total);
-
-    $('cart-items').innerHTML = entries.length ? entries.map(({ product, quantity }) => `
-      <div class="cart-item">
-        <div class="cart-item__visual">${product.visual}</div>
-        <div class="cart-item__info"><strong>${product.name}</strong><span>${money(product.price)}</span></div>
-        <div class="cart-item__controls">
-          <button data-cart-minus="${product.id}" type="button">−</button>
-          <span>${quantity}</span>
-          <button data-cart-plus="${product.id}" type="button">+</button>
-          <button class="cart-item__remove" data-cart-remove="${product.id}" type="button">×</button>
-        </div>
-      </div>
-    `).join('') : '<div class="cart-empty"><strong>Seu carrinho está vazio.</strong><span>Adicione um produto ao catálogo.</span></div>';
-
-    document.querySelectorAll('[data-cart-minus]').forEach(button => button.addEventListener('click', () => changeQuantity(button.dataset.cartMinus, -1)));
-    document.querySelectorAll('[data-cart-plus]').forEach(button => button.addEventListener('click', () => changeQuantity(button.dataset.cartPlus, 1)));
-    document.querySelectorAll('[data-cart-remove]').forEach(button => button.addEventListener('click', () => removeFromCart(button.dataset.cartRemove)));
-  }
-
-  function showCart(open = true) {
-    $('cart-drawer').classList.toggle('is-open', open);
-    $('drawer-backdrop').classList.toggle('is-visible', open);
-    $('cart-drawer').setAttribute('aria-hidden', String(!open));
   }
 
   function showToast(message) {
@@ -262,14 +228,21 @@
   });
 
   $('empty-clear').addEventListener('click', () => $('clear-filters').click());
-  $('cart-button').addEventListener('click', () => showCart(true));
-  $('close-cart').addEventListener('click', () => showCart(false));
-  $('drawer-backdrop').addEventListener('click', () => showCart(false));
-  $('checkout-button').addEventListener('click', () => showToast('Checkout demonstrativo — nada foi enviado.'));
-  const pluginButton = $('plugin-button');
-  if (pluginButton) pluginButton.addEventListener('click', () => $('plugin-dialog').showModal());
-  const closePluginDialog = $('close-plugin-dialog');
-  if (closePluginDialog) closePluginDialog.addEventListener('click', () => $('plugin-dialog').close());
+  const cartButton = $('cart-button');
+  if (cartButton) {
+    cartButton.addEventListener('click', () => {
+      window.location.href = './cart.html';
+    });
+  }
+
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('sitealeatorio-cart') || '{}');
+    const count = Object.values(cart).reduce((sum, quantity) => sum + Number(quantity || 0), 0);
+    const badge = $('cart-count');
+    if (badge) badge.textContent = count;
+  }
+
+  updateCartCount();
 
   loadPlugins().catch(error => {
     console.error(error);
