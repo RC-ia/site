@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Painel — Site Aleatório</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    .admin-page{width:min(980px,calc(100% - 36px));margin:42px auto 80px}
+    .admin-top{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:24px}
+    .admin-top h1{margin:5px 0;font-size:38px;letter-spacing:-.05em}
+    .admin-panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+    .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .admin-field{display:grid;gap:6px}
+    .admin-field.full{grid-column:1/-1}
+    .admin-field label{font-size:11px;font-weight:800;color:#626777}
+    .admin-field input{width:100%;height:42px;border:1px solid var(--line);border-radius:11px;padding:0 12px;outline:0}
+    .admin-field input:focus{border-color:#ffc1aa;box-shadow:0 0 0 4px rgba(255,91,32,.08)}
+    .admin-actions{display:flex;gap:9px;margin-top:16px}
+    .admin-message{margin:10px 0 0;min-height:16px;color:var(--muted);font-size:11px}
+    .admin-link-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+    .admin-link-row:last-child{border-bottom:0}
+    .admin-link-row strong,.admin-link-row span{display:block}
+    .admin-link-row strong{font-size:13px}
+    .admin-link-row span{margin-top:4px;color:var(--muted);font-size:10px;word-break:break-all}
+    .danger-button{border:1px solid #f0ccd1;background:#fff7f8;color:#ac4552;height:36px;padding:0 10px;border-radius:9px;font-size:11px;font-weight:800}
+    .lock{max-width:430px;margin:70px auto}
+    .hidden{display:none!important}
+    @media(max-width:650px){.admin-grid{grid-template-columns:1fr}.admin-field.full{grid-column:auto}.admin-top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="./"><span class="brand__mark">SA</span><span><strong>Site Aleatório</strong><small>ADMIN</small></span></a>
+      <div></div>
+      <a class="cart-button" href="./">← Voltar ao site</a>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <section id="login-panel" class="admin-panel lock">
+      <span class="eyebrow">PAINEL</span>
+      <h1>Acesso administrativo</h1>
+      <p style="color:var(--muted);font-size:12px;line-height:1.5">A senha inicial vem do arquivo <code>.env</code>.</p>
+      <form id="login-form" class="admin-field">
+        <label for="login-password">Senha</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+        <button class="primary-button" type="submit">Entrar</button>
+        <p id="login-message" class="admin-message"></p>
+      </form>
+    </section>
+
+    <section id="admin-area" class="hidden">
+      <div class="admin-top">
+        <div>
+          <span class="eyebrow">GERENCIADOR</span>
+          <h1>Links de ofertas</h1>
+          <p style="margin:0;color:var(--muted);font-size:12px">Cadastre links externos para Amazon, lojas, produtos e qualquer outra fonte.</p>
+        </div>
+      </div>
+
+      <form id="link-form" class="admin-panel">
+        <span class="eyebrow">NOVO LINK</span>
+        <h2 style="margin:5px 0 18px">Adicionar ao catálogo</h2>
+        <div class="admin-grid">
+          <div class="admin-field"><label for="link-name">Nome</label><input id="link-name" required placeholder="Ex.: RTX 4060 8GB"></div>
+          <div class="admin-field"><label for="link-source">Loja / origem</label><input id="link-source" placeholder="Ex.: Amazon"></div>
+          <div class="admin-field full"><label for="link-url">URL do produto</label><input id="link-url" type="url" required placeholder="https://..."></div>
+          <div class="admin-field"><label for="link-category">Categoria</label><input id="link-category" placeholder="GPU"></div>
+          <div class="admin-field"><label for="link-price">Preço (opcional)</label><input id="link-price" placeholder="R$ 1.999,90"></div>
+          <div class="admin-field full"><label for="link-image">Imagem (URL opcional)</label><input id="link-image" type="url" placeholder="https://.../imagem.jpg"></div>
+        </div>
+        <div class="admin-actions"><button class="primary-button" type="submit">Adicionar link</button></div>
+        <p id="link-message" class="admin-message"></p>
+      </form>
+
+      <section class="admin-panel">
+        <span class="eyebrow">CADASTRADOS</span>
+        <h2 style="margin:5px 0 8px">Links atuais</h2>
+        <div id="links-list"></div>
+      </section>
+
+      <section class="admin-panel">
+        <span class="eyebrow">CREDENCIAL</span>
+        <h2 style="margin:5px 0 8px">Trocar senha</h2>
+        <form id="password-form">
+          <div class="admin-field" style="max-width:420px">
+            <label for="new-password">Nova senha</label>
+            <input id="new-password" type="password" minlength="4" required>
+          </div>
+          <div class="admin-actions"><button class="primary-button" type="submit">Trocar senha</button></div>
+          <p id="password-message" class="admin-message"></p>
+        </form>
+      </section>
+    </section>
+  </main>
+
+<script>
+(() => {
+  let token = '';
+
+  const $ = id => document.getElementById(id);
+  const api = async (url, options={}) => {
+    const headers = {'Content-Type':'application/json', ...(options.headers||{})};
+    if(token) headers.Authorization = 'Bearer ' + token;
+    const response = await fetch(url, {...options, headers});
+    const data = await response.json().catch(() => ({}));
+    if(!response.ok) throw new Error(data.error || 'Erro na API');
+    return data;
+  };
+
+  async function renderLinks() {
+    const links = await api('/api/links');
+    $('links-list').innerHTML = links.length ? links.map(link => `
+      <div class="admin-link-row">
+        <div><strong>${escapeHtml(link.name)} <small style="color:var(--accent)">${escapeHtml(link.source)}</small></strong><span>${escapeHtml(link.url)}</span></div>
+        <button class="danger-button" data-delete="${link.id}" type="button">Excluir</button>
+      </div>`).join('') : '<p style="color:var(--muted);font-size:12px">Nenhum link cadastrado.</p>';
+    document.querySelectorAll('[data-delete]').forEach(button => button.addEventListener('click', async () => {
+      await api('/api/links/' + encodeURIComponent(button.dataset.delete), {method:'DELETE'});
+      renderLinks();
+    }));
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  }
+
+  $('login-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      const data = await api('/api/admin/login', {method:'POST', body:JSON.stringify({password:$('login-password').value})});
+      token = data.token;
+      $('login-panel').classList.add('hidden');
+      $('admin-area').classList.remove('hidden');
+      await renderLinks();
+    } catch(error) {
+      $('login-message').textContent = error.message;
+    }
+  });
+
+  $('link-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      await api('/api/links', {method:'POST', body:JSON.stringify({
+        name:$('link-name').value, source:$('link-source').value, url:$('link-url').value,
+        category:$('link-category').value, price:$('link-price').value, image:$('link-image').value
+      })});
+      event.target.reset();
+      $('link-message').textContent = 'Link adicionado.';
+      await renderLinks();
+    } catch(error) {
+      $('link-message').textContent = error.message;
+    }
+  });
+
+  $('password-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      await api('/api/admin/password', {method:'POST', body:JSON.stringify({password:$('new-password').value})});
+      token = '';
+      $('new-password').value = '';
+      $('password-message').textContent = 'Senha alterada. Faça login novamente.';
+      setTimeout(() => location.reload(), 700);
+    } catch(error) {
+      $('password-message').textContent = error.message;
+    }
+  });
+})();
+</script>
+</body>
+</html>
