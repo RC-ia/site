@@ -1,0 +1,12 @@
+{
+  "name": "site-aleatorio-tech",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Marketplace experimental com sistema simples de links administráveis.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
