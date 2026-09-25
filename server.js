@@ -100,10 +100,23 @@ const MIME = {
   '.ico': 'image/x-icon',
 };
 
+function serveFile(target, res) {
+  if (!fs.existsSync(target) || !fs.statSync(target).isFile()) {
+    return json(res, 404, { error: 'Não encontrado.' });
+  }
+  const ext = path.extname(target).toLowerCase();
+  res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
+  fs.createReadStream(target).pipe(res);
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
 
   try {
+    if (url.pathname === '/health' && req.method === 'GET') {
+      return json(res, 200, { ok: true, service: 'site-aleatorio', api: true });
+    }
+
     if (url.pathname === '/api/links' && req.method === 'GET') {
       return json(res, 200, readLinks());
     }
@@ -164,13 +177,13 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { ok: true });
     }
 
+    if (url.pathname === '/admin') {
+      return serveFile(path.join(ROOT, 'admin.html'), res);
+    }
+
     const target = safePath(url.pathname);
     if (!target) return json(res, 403, { error: 'Acesso negado.' });
-    if (!fs.existsSync(target) || !fs.statSync(target).isFile()) return json(res, 404, { error: 'Não encontrado.' });
-
-    const ext = path.extname(target).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Cache-Control': 'no-cache' });
-    fs.createReadStream(target).pipe(res);
+    return serveFile(target, res);
   } catch (error) {
     console.error(error);
     json(res, 500, { error: error.message || 'Erro interno.' });
