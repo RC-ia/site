@@ -27,7 +27,7 @@
       </form>
 
       <div class="topbar__actions">
-        <button class="cart-button" id="cart-button" type="button">Carrinho <b id="cart-count">0</b></button>
+        <a class="cart-button" id="cart-button" href="./cart.html">Carrinho <b id="cart-count">0</b></a>
       </div>
     </div>
   </header>
@@ -111,23 +111,6 @@
       </section>
     </section>
   </main>
-
-  <aside id="cart-drawer" class="drawer" aria-hidden="true">
-    <div class="drawer__header">
-      <div>
-        <span class="eyebrow">PEDIDO</span>
-        <h2>Seu carrinho</h2>
-      </div>
-      <button id="close-cart" class="close-button" type="button">×</button>
-    </div>
-    <div id="cart-items" class="cart-items"></div>
-    <div class="drawer__footer">
-      <div class="total"><span>Total</span><strong id="cart-total">R$ 0,00</strong></div>
-      <button class="primary-button" id="checkout-button" type="button">Finalizar pedido</button>
-      <small>Demo local: nenhuma compra real é processada.</small>
-    </div>
-  </aside>
-  <div id="drawer-backdrop" class="drawer-backdrop"></div>
 
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
