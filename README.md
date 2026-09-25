@@ -1,16 +1,16 @@
 # Site Aleatório Tech
 
-Marketplace experimental de computação e tecnologia, construído como um site estático.
+Marketplace experimental de computação e tecnologia, com catálogo modular e um painel simples para gerenciar links externos.
 
 ## O que tem
 
 - Catálogo de hardware, periféricos, software e itens diversos.
-- Busca instantânea.
-- Filtros por categoria.
-- Ordenação por preço e nome.
-- Carrinho persistido em `localStorage`.
-- Sistema de plugins para adicionar categorias e produtos sem alterar a página principal.
-- Interface responsiva.
+- Busca instantânea e filtros.
+- Carrinho demonstrativo persistido em `localStorage`.
+- Sistema de plugins para adicionar categorias e produtos.
+- Links externos cadastrados pelo painel administrativo.
+- API Node mínima para servir o site e persistir `data/links.json`.
+- Senha administrativa carregada de `.env`.
 
 ## Estrutura
 
@@ -19,7 +19,12 @@ Marketplace experimental de computação e tecnologia, construído como um site 
 ├── index.html
 ├── app.js
 ├── style.css
-├── favicon.svg
+├── server.js
+├── admin.html
+├── package.json
+├── .env.example
+├── data/
+│   └── links.json
 └── plugins/
     ├── core.js
     ├── manifest.js
@@ -29,37 +34,23 @@ Marketplace experimental de computação e tecnologia, construído como um site 
     └── other.plugin.js
 ```
 
-## Como criar um plugin
+## Rodar
 
-Um plugin registra seus dados no registry:
+1. Copie `.env.example` para `.env`.
+2. Escolha a senha em `ADMIN_PASSWORD`.
+3. Execute:
 
-```js
-SiteAleatorio.register({
-  id: 'meu-plugin',
-  name: 'Meu Plugin',
-  version: '1.0.0',
-  icon: '🧩',
-  description: 'Descrição curta.',
-  categories: [
-    { id: 'categoria', name: 'Categoria', icon: '📦' }
-  ],
-  products: [
-    {
-      id: 'produto-01',
-      category: 'categoria',
-      name: 'Produto',
-      subtitle: 'Descrição',
-      price: 99.90,
-      rating: 4.8,
-      visual: 'CPU',
-      meta: 'Especificação'
-    }
-  ]
-});
+```bash
+npm start
 ```
 
-Depois, adicione o caminho do arquivo em `plugins/manifest.js`.
+4. Abra `http://localhost:3000/`.
+5. O painel fica em `http://localhost:3000/admin.html`.
 
-## Execução
+A senha pode ser trocada dentro do painel. A nova senha é gravada no `.env`; o arquivo está no `.gitignore`.
 
-Não há build nem backend nesta versão. Basta abrir `index.html` ou publicar os arquivos em um host estático.
+## Cadastrar um link
+
+No painel, informe nome, URL, loja/origem, categoria, preço e opcionalmente uma URL de imagem. O link aparece automaticamente na área **Ofertas externas** do catálogo.
+
+> Observação: essa API foi pensada para uma hospedagem Node simples. GitHub Pages, sozinho, não executa o `server.js`; nesse caso, a parte administrativa/API precisa rodar em outro serviço.
