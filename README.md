@@ -1,70 +1,86 @@
 # Site Aleatório Tech
 
-Marketplace experimental de computação e tecnologia, com catálogo modular e um painel simples para gerenciar links externos.
-
-## O que tem
-
-- Catálogo de hardware, periféricos, software e itens diversos.
-- Busca instantânea e filtros.
-- Carrinho demonstrativo persistido em `localStorage`.
-- Sistema de plugins para adicionar categorias e produtos.
-- Links externos cadastrados pelo painel administrativo.
-- API Node mínima para servir o site e persistir `data/links.json`.
-- Senha administrativa carregada de `.env`.
+Marketplace experimental de computação e tecnologia, com catálogo modular e painel simples para gerenciar links externos.
 
 ## Estrutura
 
-```text
-/
-├── index.html
-├── app.js
-├── style.css
-├── server.js
-├── admin.html
-├── package.json
-├── .env.example
-├── data/
-│   └── links.json
-└── plugins/
-    ├── core.js
-    ├── manifest.js
-    ├── hardware.plugin.js
-    ├── peripherals.plugin.js
-    ├── software.plugin.js
-    └── other.plugin.js
+- Catálogo estático em `index.html`, `app.js` e `style.css`.
+- Plugins em `plugins/`.
+- Painel em `admin.html`.
+- API local em `server.js`.
+- API para Cloudflare Pages em `functions/`.
+- Links e senha administrativa persistidos em Cloudflare KV quando publicado na Cloudflare.
+
+## Painel
+
+Abra:
+
+```
+/admin
 ```
 
-## Rodar
+ou:
 
-1. Copie `.env.example` para `.env`.
-2. Escolha a senha em `ADMIN_PASSWORD`.
-3. Execute:
+```
+/admin.html
+```
+
+A senha inicial vem de `ADMIN_PASSWORD`. Dentro do painel ela pode ser alterada; a nova senha fica salva no KV e passa a substituir a senha inicial do ambiente.
+
+## Cloudflare Pages
+
+O projeto pode ser conectado diretamente ao GitHub. O diretório `functions/` é usado como Pages Functions.
+
+Configure no projeto da Cloudflare:
+
+```
+ADMIN_PASSWORD=uma-senha-inicial
+SESSION_SECRET=um-segredo-qualquer
+```
+
+Crie uma instância de **KV** e faça o binding com o nome exato:
+
+```
+LINKS_KV
+```
+
+Depois do deploy, teste:
+
+```
+/health
+```
+
+A resposta esperada é:
+
+```json
+{"ok":true,"service":"site-aleatorio","api":"cloudflare-pages-functions"}
+```
+
+As rotas administrativas ficam no mesmo domínio:
+
+```
+POST /api/admin/login
+GET  /api/links
+POST /api/links
+DELETE /api/links/:id
+POST /api/admin/password
+```
+
+### Por que existe também server.js?
+
+Para desenvolvimento local com Node. No Cloudflare Pages, as rotas de `functions/` assumem o lugar dele.
+
+## Desenvolvimento local com Node
 
 ```bash
+cp .env.example .env
 npm start
 ```
 
-4. Abra `http://localhost:3000/`.
-5. O painel fica em `http://localhost:3000/admin.html`.
+A API local usa `data/links.json`.
 
-A senha pode ser trocada dentro do painel. A nova senha é gravada no `.env`; o arquivo está no `.gitignore`.
+## Desenvolvimento local com Cloudflare
 
-## Cadastrar um link
+Copie `.dev.vars.example` para `.dev.vars` e use Wrangler/Pages dev com um binding KV chamado `LINKS_KV`.
 
-No painel, informe nome, URL, loja/origem, categoria, preço e opcionalmente uma URL de imagem. O link aparece automaticamente na área **Ofertas externas** do catálogo.
-
-> Observação: essa API foi pensada para uma hospedagem Node simples. GitHub Pages, sozinho, não executa o `server.js`; nesse caso, a parte administrativa/API precisa rodar em outro serviço.
-
-
-## Diagnóstico de implantação
-
-O painel administrativo usa a API do mesmo servidor. Se `/admin.html` abrir, mas `POST /api/admin/login` retornar **404**, o domínio está servindo apenas os arquivos estáticos ou está passando por outro servidor/proxy que não executa este `server.js`.
-
-O servidor incluído agora também atende:
-
-- `/admin` → painel.
-- `/health` → `{"ok":true,...}` para testar se a API correta está por trás do domínio.
-- `/api/links` → links públicos.
-- `/api/admin/login` → login do painel.
-
-Para o domínio funcionar, o proxy/túnel precisa apontar para a porta em que `npm start` estiver rodando, e não para um servidor somente estático.
+> `.env` e `.dev.vars` não devem ser enviados ao GitHub.
