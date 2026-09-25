@@ -28,6 +28,7 @@
 
       <div class="topbar__actions">
         <button class="icon-button" id="plugin-button" type="button" title="Plugins ativos">🧩 <span id="plugin-count">0</span></button>
+        <a class="icon-button admin-link" href="./admin.html" title="Painel administrativo">⚙️ Admin</a>
         <button class="cart-button" id="cart-button" type="button">🛒 Carrinho <b id="cart-count">0</b></button>
       </div>
     </div>
@@ -92,6 +93,18 @@
 
         <div id="plugin-strip" class="plugin-strip"></div>
         <div id="product-grid" class="product-grid"></div>
+
+        <section id="external-links-section" class="external-links-section" hidden>
+          <div class="external-links__head">
+            <div>
+              <span class="eyebrow">OFERTAS EXTERNAS</span>
+              <h2>Links adicionados</h2>
+              <p>Produtos indicados por fontes externas.</p>
+            </div>
+          </div>
+          <div id="external-links-grid" class="external-links-grid"></div>
+        </section>
+
         <div id="empty-state" class="empty-state" hidden>
           <div>🛰️</div>
           <h3>Nada encontrado</h3>
