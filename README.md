@@ -2,22 +2,19 @@
 
 Marketplace experimental de computação e tecnologia, com catálogo modular e painel simples para gerenciar links externos.
 
-## Arquitetura
+## Como está publicado
 
-O site pode continuar sendo publicado como **Pages Direct Upload**. O arquivo especial `_worker.js` intercepta somente `/api/*`; todo o restante continua sendo servido como arquivo estático pelo Pages.
+O site foi pensado para **Cloudflare Pages usando Direct Upload**. Nesse modo, a pasta `functions/` não é compilada pelo upload do dashboard. O formato `_worker.js`, entretanto, é suportado pelo Direct Upload e pode interceptar as requisições antes de devolver os arquivos estáticos. citeturn838923search1turn838923search0
+
+Arquitetura:
 
 ```text
-navegador
-   │
-   ▼
 central.rcscan.online
-   │
-   ├── /admin.html ──→ arquivo estático
-   ├── /index.html ──→ arquivo estático
-   └── /api/* ───────→ _worker.js ──→ KV
+       │
+       └── _worker.js
+             ├── /api/*  → API
+             └── demais  → arquivos estáticos
 ```
-
-O Cloudflare documenta que `_worker.js` pode ser usado no modo avançado para assumir o tratamento das requisições e que `env.ASSETS.fetch(request)` devolve os arquivos estáticos. O Direct Upload também documenta suporte ao `_worker.js`. 
 
 ## Painel
 
@@ -33,53 +30,63 @@ ou:
 /admin.html
 ```
 
-A senha inicial vem de `ADMIN_PASSWORD`. Depois, ela pode ser trocada pelo próprio painel e a nova senha fica no KV.
+O painel permite cadastrar links de Amazon e outras lojas, além de trocar a senha.
 
-## Configuração do Cloudflare
+## Configuração
 
-No projeto Pages, adicione uma instância de **Workers KV** e crie o binding:
+No projeto que executa o `_worker.js`, configure:
+
+```
+ADMIN_PASSWORD
+SESSION_SECRET
+```
+
+e um binding KV chamado:
 
 ```
 LINKS_KV
 ```
 
-Depois adicione como secret:
+Workers permite configurar variáveis/secrets pelo dashboard e ligar namespaces KV por binding. citeturn838923search6turn838923search7
 
-```
-ADMIN_PASSWORD
-```
+A senha inicial é `ADMIN_PASSWORD`. Quando ela é alterada pelo painel, a nova senha é guardada no KV.
 
-e outro secret:
+## Teste
 
-```
-SESSION_SECRET
-```
-
-Não coloque esses valores no GitHub. O Cloudflare disponibiliza secrets e bindings pelo objeto `env` em runtime.
-
-Depois de fazer um novo upload incluindo `_worker.js`, teste:
+Depois do upload:
 
 ```
 https://central.rcscan.online/api/health
 ```
 
-Resposta esperada:
+deve retornar:
 
 ```json
 {"ok":true,"service":"site-aleatorio-api"}
 ```
 
-## API
+## Arquivos principais
 
+```text
+/
+├── _worker.js
+├── index.html
+├── admin.html
+├── app.js
+├── style.css
+├── package.json
+├── server.js
+├── data/
+│   └── links.json
+└── plugins/
+    ├── core.js
+    ├── manifest.js
+    ├── hardware.plugin.js
+    ├── peripherals.plugin.js
+    ├── software.plugin.js
+    └── other.plugin.js
 ```
-GET    /api/health
-GET    /api/links
-POST   /api/admin/login
-POST   /api/admin/password
-POST   /api/links
-DELETE /api/links/:id
-```
 
-## Local
+`server.js` continua disponível para desenvolvimento local com Node; no Pages Direct Upload, o ponto de entrada web é `_worker.js`.
 
-O `server.js` continua disponível para rodar o projeto localmente com Node.
+> Para um sistema realmente simples, não é necessário usar as APIs das lojas: os links cadastrados podem ser links de afiliado ou links comuns, e o site apenas os exibe.
