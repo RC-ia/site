@@ -5,6 +5,7 @@
     sort: 'featured',
     cart: JSON.parse(localStorage.getItem('sitealeatorio-cart') || '{}'),
     pluginsReady: false,
+    externalLinks: [],
   };
 
   const $ = (id) => document.getElementById(id);
@@ -29,6 +30,55 @@
     renderPluginUI();
     renderCategories();
     renderProducts();
+    await loadExternalLinks();
+  }
+
+  async function loadExternalLinks() {
+    try {
+      const response = await fetch('./api/links', { cache: 'no-store' });
+      if (!response.ok) throw new Error('API de links indisponível');
+      state.externalLinks = await response.json();
+    } catch {
+      state.externalLinks = [];
+    }
+    renderExternalLinks();
+  }
+
+  function renderExternalLinks() {
+    const section = $('external-links-section');
+    const grid = $('external-links-grid');
+    if (!state.externalLinks.length) {
+      section.hidden = true;
+      return;
+    }
+
+    const filtered = state.externalLinks.filter(link => {
+      const q = state.query.trim().toLocaleLowerCase('pt-BR');
+      if (!q) return true;
+      return `${link.name} ${link.source} ${link.category}`.toLocaleLowerCase('pt-BR').includes(q);
+    });
+
+    section.hidden = filtered.length === 0;
+    grid.innerHTML = filtered.map(link => {
+      const image = link.image
+        ? `<img src="${escapeHtml(link.image)}" alt="" loading="lazy">`
+        : `<span class="external-link__fallback">${escapeHtml((link.source || 'LINK').slice(0, 8))}</span>`;
+      return `
+        <article class="external-link-card">
+          <div class="external-link__image">${image}</div>
+          <div class="external-link__body">
+            <div class="external-link__meta"><span>${escapeHtml(link.source || 'Loja')}</span><span>${escapeHtml(link.category || 'Diversos')}</span></div>
+            <h3>${escapeHtml(link.name)}</h3>
+            ${link.price ? `<strong class="external-link__price">${escapeHtml(link.price)}</strong>` : ''}
+            <a class="add-button" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">Ver oferta ↗</a>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
   }
 
   function filteredProducts() {
@@ -109,6 +159,7 @@
     $('empty-state').hidden = products.length !== 0;
     $('result-count').textContent = `${products.length} ${products.length === 1 ? 'item' : 'itens'}`;
     $('catalog-title').textContent = state.category === 'all' ? 'Todos os produtos' : categoryInfo(state.category).name;
+    renderExternalLinks();
 
     document.querySelectorAll('[data-add]').forEach(button => {
       button.addEventListener('click', () => addToCart(button.dataset.add));
@@ -222,6 +273,7 @@
   $('search-input').addEventListener('input', () => {
     state.query = $('search-input').value;
     renderProducts();
+    renderExternalLinks();
   });
 
   $('sort-select').addEventListener('change', event => {
