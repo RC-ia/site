@@ -156,7 +156,7 @@
   function renderProducts() {
     const products = filteredProducts();
     $('product-grid').innerHTML = products.map(productCard).join('');
-    $('empty-state').hidden = products.length !== 0;
+    $('empty-state').hidden = products.length !== 0 || state.externalLinks.length !== 0;
     $('result-count').textContent = `${products.length} ${products.length === 1 ? 'item' : 'itens'}`;
     $('catalog-title').textContent = state.category === 'all' ? 'Todos os produtos' : categoryInfo(state.category).name;
     renderExternalLinks();
@@ -168,7 +168,8 @@
 
   function renderPluginUI() {
     const plugins = SiteAleatorio.all();
-    $('plugin-count').textContent = plugins.length;
+    const pluginCount = $('plugin-count');
+    if (pluginCount) pluginCount.textContent = plugins.length;
     $('plugin-strip').innerHTML = plugins.map(plugin => `
       <button class="plugin-pill" data-plugin-category="${plugin.id}" type="button">
         ${plugin.icon} ${plugin.name}
@@ -294,8 +295,10 @@
   $('close-cart').addEventListener('click', () => showCart(false));
   $('drawer-backdrop').addEventListener('click', () => showCart(false));
   $('checkout-button').addEventListener('click', () => showToast('Checkout demonstrativo — nada foi enviado.'));
-  $('plugin-button').addEventListener('click', () => $('plugin-dialog').showModal());
-  $('close-plugin-dialog').addEventListener('click', () => $('plugin-dialog').close());
+  const pluginButton = $('plugin-button');
+  if (pluginButton) pluginButton.addEventListener('click', () => $('plugin-dialog').showModal());
+  const closePluginDialog = $('close-plugin-dialog');
+  if (closePluginDialog) closePluginDialog.addEventListener('click', () => $('plugin-dialog').close());
 
   loadPlugins().catch(error => {
     console.error(error);
