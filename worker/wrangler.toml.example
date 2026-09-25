@@ -1,0 +1,11 @@
+name = "site-aleatorio-api"
+main = "index.js"
+compatibility_date = "2026-09-25"
+
+# Crie o KV no Cloudflare e substitua SEU_KV_ID.
+[[kv_namespaces]]
+binding = "LINKS_KV"
+id = "SEU_KV_ID"
+
+# Não coloque senha aqui.
+# Configure ADMIN_PASSWORD e SESSION_SECRET como secrets no Cloudflare.
