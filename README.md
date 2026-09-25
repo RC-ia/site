@@ -2,14 +2,22 @@
 
 Marketplace experimental de computação e tecnologia, com catálogo modular e painel simples para gerenciar links externos.
 
-## Estrutura
+## Arquitetura
 
-- Catálogo estático em `index.html`, `app.js` e `style.css`.
-- Plugins em `plugins/`.
-- Painel em `admin.html`.
-- API local em `server.js`.
-- API para Cloudflare Pages em `functions/`.
-- Links e senha administrativa persistidos em Cloudflare KV quando publicado na Cloudflare.
+O site pode continuar sendo publicado como **Pages Direct Upload**. O arquivo especial `_worker.js` intercepta somente `/api/*`; todo o restante continua sendo servido como arquivo estático pelo Pages.
+
+```text
+navegador
+   │
+   ▼
+central.rcscan.online
+   │
+   ├── /admin.html ──→ arquivo estático
+   ├── /index.html ──→ arquivo estático
+   └── /api/* ───────→ _worker.js ──→ KV
+```
+
+O Cloudflare documenta que `_worker.js` pode ser usado no modo avançado para assumir o tratamento das requisições e que `env.ASSETS.fetch(request)` devolve os arquivos estáticos. O Direct Upload também documenta suporte ao `_worker.js`. 
 
 ## Painel
 
@@ -25,62 +33,53 @@ ou:
 /admin.html
 ```
 
-A senha inicial vem de `ADMIN_PASSWORD`. Dentro do painel ela pode ser alterada; a nova senha fica salva no KV e passa a substituir a senha inicial do ambiente.
+A senha inicial vem de `ADMIN_PASSWORD`. Depois, ela pode ser trocada pelo próprio painel e a nova senha fica no KV.
 
-## Cloudflare Pages
+## Configuração do Cloudflare
 
-O projeto pode ser conectado diretamente ao GitHub. O diretório `functions/` é usado como Pages Functions.
-
-Configure no projeto da Cloudflare:
-
-```
-ADMIN_PASSWORD=uma-senha-inicial
-SESSION_SECRET=um-segredo-qualquer
-```
-
-Crie uma instância de **KV** e faça o binding com o nome exato:
+No projeto Pages, adicione uma instância de **Workers KV** e crie o binding:
 
 ```
 LINKS_KV
 ```
 
-Depois do deploy, teste:
+Depois adicione como secret:
 
 ```
-/health
+ADMIN_PASSWORD
 ```
 
-A resposta esperada é:
+e outro secret:
+
+```
+SESSION_SECRET
+```
+
+Não coloque esses valores no GitHub. O Cloudflare disponibiliza secrets e bindings pelo objeto `env` em runtime.
+
+Depois de fazer um novo upload incluindo `_worker.js`, teste:
+
+```
+https://central.rcscan.online/api/health
+```
+
+Resposta esperada:
 
 ```json
-{"ok":true,"service":"site-aleatorio","api":"cloudflare-pages-functions"}
+{"ok":true,"service":"site-aleatorio-api"}
 ```
 
-As rotas administrativas ficam no mesmo domínio:
+## API
 
 ```
-POST /api/admin/login
-GET  /api/links
-POST /api/links
+GET    /api/health
+GET    /api/links
+POST   /api/admin/login
+POST   /api/admin/password
+POST   /api/links
 DELETE /api/links/:id
-POST /api/admin/password
 ```
 
-### Por que existe também server.js?
+## Local
 
-Para desenvolvimento local com Node. No Cloudflare Pages, as rotas de `functions/` assumem o lugar dele.
-
-## Desenvolvimento local com Node
-
-```bash
-cp .env.example .env
-npm start
-```
-
-A API local usa `data/links.json`.
-
-## Desenvolvimento local com Cloudflare
-
-Copie `.dev.vars.example` para `.dev.vars` e use Wrangler/Pages dev com um binding KV chamado `LINKS_KV`.
-
-> `.env` e `.dev.vars` não devem ser enviados ao GitHub.
+O `server.js` continua disponível para rodar o projeto localmente com Node.
