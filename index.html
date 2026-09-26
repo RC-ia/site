@@ -4,28 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080A0D">
-  <meta name="description" content="Central Market — marketplace de computação e tecnologia.">
-  <title>Central Market</title>
+  <meta name="description" content="Central Market — tecnologia, hardware e ofertas selecionadas.">
+  <title>Central Market — Tecnologia</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="topbar">
     <div class="topbar__inner">
-      <a class="brand" href="#" aria-label="Central Market">
+      <a class="brand" href="./" aria-label="Central Market">
         <span class="brand__mark">CM</span>
-        <span>
-          <strong>Central Market</strong>
-          <small>TECH MARKET</small>
-        </span>
+        <span><strong>Central Market</strong><small>TECH MARKET</small></span>
       </a>
-
       <form class="search" id="search-form" role="search">
         <label class="sr-only" for="search-input">Pesquisar produtos</label>
         <input id="search-input" type="search" placeholder="Pesquisar CPU, GPU, SSD, teclado..." autocomplete="off">
         <button type="submit" aria-label="Pesquisar">⌕</button>
       </form>
-
       <div class="topbar__actions">
         <a class="cart-button" id="cart-button" href="./cart.html">Carrinho <b id="cart-count">0</b></a>
       </div>
@@ -35,116 +30,91 @@
   <main>
     <section class="hero">
       <div class="hero__copy">
-        <span class="eyebrow">MARKETPLACE EXPERIMENTAL</span>
-        <h1>Computação sem complicação.<br><em>Do jeito certo.</em></h1>
-        <p>Um catálogo modular onde hardware, periféricos, software e coisas aleatórias vivem no mesmo lugar.</p>
+        <span class="eyebrow">TECNOLOGIA SELECIONADA</span>
+        <h1>Seu próximo setup.<br><em>Começa aqui.</em></h1>
+        <p>Hardware, periféricos e ofertas selecionadas em um catálogo simples, rápido e feito para quem gosta de tecnologia.</p>
+        <div class="hero__actions">
+          <a class="primary-button" href="#catalog-section">Explorar produtos</a>
+          <a class="hero-link" href="#showcase-section">Ver showcase ↗</a>
+        </div>
         <div class="hero__tags">
-          <span>Ofertas rápidas</span>
-          <span>Catálogo modular</span>
-          <span>Projeto de concurso</span>
+          <span>Ofertas selecionadas</span>
+          <span>Catálogo organizado</span>
+          <span>Atendimento</span>
         </div>
       </div>
-      <div class="hero__visual" aria-hidden="true">
-        <div class="orb orb--1"></div>
-        <div class="orb orb--2"></div>
-        <div class="hero-device">GPU</div>
-        <div class="hero-chip">PCIe</div>
-        <div class="hero-float">RTX-like<br><b>∞</b></div>
+      <div class="hero__visual">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-label="Showcase de produtos de tecnologia">
+          <source src="https://res.cloudinary.com/pr44jyyy/video/upload/v1790281452/Technology_products_showcase_vid__20260924152326.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
       </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Benefícios">
+      <article><span>✓</span><div><strong>Compra segura</strong><small>Processo simples e transparente</small></div></article>
+      <article><span>↗</span><div><strong>Ofertas selecionadas</strong><small>Links e produtos organizados</small></div></article>
+      <article><span>▣</span><div><strong>Catálogo organizado</strong><small>Encontre por categoria ou busca</small></div></article>
+      <article><span>?</span><div><strong>Central de ajuda</strong><small>Suporte e informações no rodapé</small></div></article>
     </section>
 
     <section class="layout" id="catalog-section">
       <aside class="sidebar">
         <div class="sidebar__head">
-          <div>
-            <span class="eyebrow">CATÁLOGO</span>
-            <h2>Categorias</h2>
-          </div>
+          <div><span class="eyebrow">CATÁLOGO</span><h2>Categorias</h2></div>
           <button id="clear-filters" class="text-button" type="button">Limpar</button>
         </div>
         <div id="category-list" class="category-list"></div>
-
         <div class="sidebar__card">
           <span class="sidebar__card-icon">CM</span>
-          <strong>Arquitetura por plugins</strong>
-          <p>As categorias e produtos são adicionados por módulos independentes.</p>
+          <strong>Encontre mais rápido</strong>
+          <p>Use as categorias ou a busca para filtrar o catálogo sem sair da página.</p>
         </div>
       </aside>
 
       <section class="catalog">
         <div class="catalog__toolbar">
-          <div>
-            <span class="eyebrow">PRODUTOS</span>
-            <h2 id="catalog-title">Todos os produtos</h2>
-            <p id="result-count">0 itens</p>
-          </div>
-          <label class="sort-control">
-            <span>Ordenar</span>
-            <select id="sort-select">
-              <option value="featured">Destaques</option>
-              <option value="price-asc">Menor preço</option>
-              <option value="price-desc">Maior preço</option>
-              <option value="name">Nome</option>
-            </select>
-          </label>
+          <div><span class="eyebrow">PRODUTOS</span><h2 id="catalog-title">Todos os produtos</h2><p id="result-count">0 itens</p></div>
+          <label class="sort-control"><span>Ordenar</span><select id="sort-select"><option value="featured">Destaques</option><option value="price-asc">Menor preço</option><option value="price-desc">Maior preço</option><option value="name">Nome</option></select></label>
         </div>
-
         <div id="product-grid" class="product-grid"></div>
 
         <section id="external-links-section" class="external-links-section" hidden>
-          <div class="external-links__head">
-            <div>
-              <span class="eyebrow">OFERTAS EXTERNAS</span>
-              <h2>Links adicionados</h2>
-              <p>Produtos indicados por fontes externas.</p>
-            </div>
-          </div>
+          <div class="external-links__head"><div><span class="eyebrow">OFERTAS</span><h2>Ofertas selecionadas</h2><p>Produtos indicados por fontes externas.</p></div></div>
           <div id="external-links-grid" class="external-links-grid"></div>
         </section>
 
         <div id="empty-state" class="empty-state" hidden>
-          <div class="empty-state__mark">—</div>
-          <h3>Nada encontrado</h3>
-          <p>Tente outro termo ou limpe os filtros.</p>
-          <button id="empty-clear" class="primary-button" type="button">Ver tudo</button>
+          <div class="empty-state__mark">—</div><h3>Nada encontrado</h3><p>Tente outro termo ou limpe os filtros.</p><button id="empty-clear" class="primary-button" type="button">Ver tudo</button>
         </div>
       </section>
     </section>
-  </main>
 
+    <section class="showcase-section" id="showcase-section">
+      <div class="showcase-copy">
+        <span class="eyebrow">TECHNOLOGY SHOWCASE</span>
+        <h2>Veja a tecnologia<br><em>em movimento.</em></h2>
+        <p>Uma apresentação visual dos produtos e do universo da Central Market, integrada ao mesmo visual escuro do catálogo.</p>
+        <a class="primary-button" href="#catalog-section">Explorar catálogo</a>
+      </div>
+      <div class="showcase-video">
+        <video autoplay muted loop playsinline preload="metadata" aria-label="Vídeo showcase de produtos">
+          <source src="https://res.cloudinary.com/pr44jyyy/video/upload/v1790281452/Technology_products_showcase_vid__20260924152326.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+  </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div class="footer-brand">
-        <div class="brand__mark">CM</div>
-        <div>
-          <strong>Central Market</strong>
-          <span>TECH MARKET</span>
-        </div>
-      </div>
-      <div class="footer-column">
-        <span class="footer-title">Navegação</span>
-        <a href="#catalog-section">Catálogo</a>
-        <a href="./admin.html">Painel</a>
-      </div>
-      <div class="footer-column">
-        <span class="footer-title">Categorias</span>
-        <span>Hardware</span>
-        <span>Periféricos</span>
-        <span>Software</span>
-      </div>
-      <div class="footer-column">
-        <span class="footer-title">Central Market</span>
-        <span>Marketplace experimental</span>
-        <span>Links externos de lojas</span>
-      </div>
+      <div class="footer-brand"><div class="brand__mark">CM</div><div><strong>Central Market</strong><span>TECH MARKET</span></div></div>
+      <div class="footer-column"><span class="footer-title">Navegação</span><a href="#catalog-section">Catálogo</a><a href="#showcase-section">Showcase</a><a href="./cart.html">Carrinho</a><a href="./admin.html">Painel</a></div>
+      <div class="footer-column"><span class="footer-title">Ajuda</span><a href="./faq.html">FAQ</a><a href="./contato.html">Contato</a><a href="./entrega.html">Entrega</a><a href="./trocas-devolucoes.html">Trocas e devoluções</a></div>
+      <div class="footer-column"><span class="footer-title">Informações</span><a href="./privacidade.html">Privacidade</a><a href="./termos.html">Termos de uso</a><span>Ofertas pertencem às respectivas lojas.</span></div>
     </div>
-    <div class="site-footer__bottom">
-      <span>Central Market · Projeto experimental</span>
-      <span>Produtos e ofertas pertencem às suas respectivas lojas.</span>
-    </div>
+    <div class="site-footer__bottom"><span>Central Market · Tech Market</span><span>Consulte as condições de cada oferta antes da compra.</span></div>
   </footer>
 
   <script src="./plugins/core.js"></script>
