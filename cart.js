@@ -68,7 +68,7 @@
 
     $('cart-list').innerHTML = items.map(({ product, quantity }) => `
       <article class="cart-page-item">
-        <div class="cart-page-item__visual">${escapeHtml(product.visual)}</div>
+        <div class="cart-page-item__visual${product.image ? " has-image" : ""}">${product.image ? `<img class="cart-page-item__visual-image" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">` : escapeHtml(product.visual)}</div>
         <div class="cart-page-item__main">
           <div class="cart-page-item__meta">
             <span>${escapeHtml(product.category)}</span>
