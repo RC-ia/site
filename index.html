@@ -1,124 +1,88 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080A0D">
-  <meta name="description" content="Central Market — tecnologia, hardware e ofertas selecionadas.">
-  <title>Central Market — Tecnologia</title>
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0D0D0D"><meta name="description" content="CentralMarket — tudo o que você precisa em um só lugar.">
+<title>CentralMarket — Sua loja online</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar__inner">
-      <a class="brand" href="./" aria-label="Central Market">
-        <span class="brand__mark">CM</span>
-        <span><strong>Central Market</strong><small>TECH MARKET</small></span>
-      </a>
-      <form class="search" id="search-form" role="search">
-        <label class="sr-only" for="search-input">Pesquisar produtos</label>
-        <input id="search-input" type="search" placeholder="Pesquisar CPU, GPU, SSD, teclado..." autocomplete="off">
-        <button type="submit" aria-label="Pesquisar">⌕</button>
-      </form>
-      <div class="topbar__actions">
-        <a class="cart-button" id="cart-button" href="./cart.html">Carrinho <b id="cart-count">0</b></a>
-      </div>
+<header class="cm-header">
+  <div class="cm-header__inner">
+    <a class="cm-logo" href="./"><span class="cm-logo__icon">▱</span><strong>Central<span>Market</span></strong></a>
+    <nav class="cm-nav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a><a href="#produtos">Produtos</a><a href="#categorias">Categorias</a><a href="#sobre">Sobre Nós</a><a href="#contato">Contato</a>
+    </nav>
+    <div class="cm-actions">
+      <form class="cm-search" id="search-form"><input id="search-input" type="search" placeholder="O que você procura?" aria-label="O que você procura?"><button type="submit" aria-label="Buscar">⌕</button></form>
+      <button class="cm-icon-btn" type="button" aria-label="Perfil">♙</button>
+      <a class="cm-cart" href="./cart.html" aria-label="Carrinho">🛒<b id="cart-count">0</b></a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <main>
-    <section class="hero">
-      <div class="hero__copy">
-        <span class="eyebrow">TECNOLOGIA SELECIONADA</span>
-        <h1>Seu próximo setup.<br><em>Começa aqui.</em></h1>
-        <p>Hardware, periféricos e ofertas selecionadas em um catálogo simples, rápido e feito para quem gosta de tecnologia.</p>
-        <div class="hero__actions">
-          <a class="primary-button" href="#catalog-section">Explorar produtos</a>
-          <a class="hero-link" href="#showcase-section">Ver showcase ↗</a>
-        </div>
-        <div class="hero__tags">
-          <span>Ofertas selecionadas</span>
-          <span>Catálogo organizado</span>
-          <span>Atendimento</span>
-        </div>
-      </div>
-      <div class="hero__visual">
-        <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-label="Showcase de produtos de tecnologia">
-          <source src="https://res.cloudinary.com/pr44jyyy/video/upload/v1790281452/Technology_products_showcase_vid__20260924152326.mp4" type="video/mp4">
-        </video>
-        <div class="hero-video-overlay"></div>
-      </div>
-    </section>
+<main id="inicio">
+<section class="cm-hero">
+  <div class="cm-hero__copy">
+    <span class="cm-kicker">Qualidade <i>•</i> Variedade <i>•</i> Entrega Rápida</span>
+    <h1>Tudo o que você precisa,<br><span>em um só lugar!</span></h1>
+    <p>Na CentralMarket você encontra produtos para sua rotina, sua casa e seu estilo em uma experiência de compra simples, segura e feita para facilitar suas escolhas.</p>
+    <a class="cm-yellow-btn" href="#produtos">Ver Produtos <span>→</span></a>
+  </div>
+  <div class="cm-hero__media">
+    <video autoplay muted loop playsinline preload="metadata">
+      <source src="https://res.cloudinary.com/pr44jyyy/video/upload/v1790281452/Technology_products_showcase_vid__20260924152326.mp4" type="video/mp4">
+    </video>
+    <span class="cm-script">Mais que compras,<br>experiências!</span>
+  </div>
+</section>
 
-    <section class="trust-strip" aria-label="Benefícios">
-      <article><span>✓</span><div><strong>Compra segura</strong><small>Processo simples e transparente</small></div></article>
-      <article><span>↗</span><div><strong>Ofertas selecionadas</strong><small>Links e produtos organizados</small></div></article>
-      <article><span>▣</span><div><strong>Catálogo organizado</strong><small>Encontre por categoria ou busca</small></div></article>
-      <article><span>?</span><div><strong>Central de ajuda</strong><small>Suporte e informações no rodapé</small></div></article>
-    </section>
+<section class="cm-benefits" aria-label="Diferenciais">
+  <article><span>▰</span><div><strong>Entrega Rápida</strong><small>Para todo o Brasil</small></div></article>
+  <article><span>◇</span><div><strong>Compra Segura</strong><small>Seus dados protegidos</small></div></article>
+  <article><span>▣</span><div><strong>Diversas Formas de Pagamento</strong><small>Cartão, Pix e mais</small></div></article>
+  <article><span>◉</span><div><strong>Suporte Especializado</strong><small>Estamos sempre com você</small></div></article>
+</section>
 
-    <section class="layout" id="catalog-section">
-      <aside class="sidebar">
-        <div class="sidebar__head">
-          <div><span class="eyebrow">CATÁLOGO</span><h2>Categorias</h2></div>
-          <button id="clear-filters" class="text-button" type="button">Limpar</button>
-        </div>
-        <div id="category-list" class="category-list"></div>
-        <div class="sidebar__card">
-          <span class="sidebar__card-icon">CM</span>
-          <strong>Encontre mais rápido</strong>
-          <p>Use as categorias ou a busca para filtrar o catálogo sem sair da página.</p>
-        </div>
-      </aside>
+<section class="cm-section" id="categorias">
+  <div class="cm-section-head center"><span class="cm-kicker">EXPLORE</span><h2>Explore Nossas <span>Categorias</span></h2><p>Encontre o que você precisa, de forma rápida e fácil.</p></div>
+  <div id="category-list" class="cm-category-grid"></div>
+</section>
 
-      <section class="catalog">
-        <div class="catalog__toolbar">
-          <div><span class="eyebrow">PRODUTOS</span><h2 id="catalog-title">Todos os produtos</h2><p id="result-count">0 itens</p></div>
-          <label class="sort-control"><span>Ordenar</span><select id="sort-select"><option value="featured">Destaques</option><option value="price-asc">Menor preço</option><option value="price-desc">Maior preço</option><option value="name">Nome</option></select></label>
-        </div>
-        <div id="product-grid" class="product-grid"></div>
+<section class="cm-section" id="produtos">
+  <div class="cm-section-head row"><div><span class="cm-kicker">SELEÇÃO CENTRALMARKET</span><h2>Produtos em Destaque</h2></div><a class="cm-section-link" href="#produtos">Ver todos os produtos →</a></div>
+  <div id="product-grid" class="cm-products"></div>
+  <div class="cm-sort-wrap"><label>Ordenar <select id="sort-select"><option value="featured">Destaques</option><option value="price-asc">Menor preço</option><option value="price-desc">Maior preço</option><option value="name">Nome</option></select></label></div>
+  <div id="empty-state" class="cm-empty" hidden><h3>Nenhum produto encontrado</h3><p>Experimente outra busca ou categoria.</p><button id="empty-clear" class="cm-yellow-btn">Ver tudo</button></div>
+</section>
 
-        <section id="external-links-section" class="external-links-section" hidden>
-          <div class="external-links__head"><div><span class="eyebrow">OFERTAS</span><h2>Ofertas selecionadas</h2><p>Produtos indicados por fontes externas.</p></div></div>
-          <div id="external-links-grid" class="external-links-grid"></div>
-        </section>
+<section class="cm-coupon">
+  <div class="cm-coupon__offer"><span class="cm-gift">♢</span><div><strong>Ganhe 10% de desconto na sua primeira compra!</strong><small>Uma vantagem especial para começar.</small></div></div>
+  <button class="cm-coupon__code" id="coupon-copy" type="button"><small>Use o cupom:</small><strong>BEMVINDO</strong><span>Copiar</span></button>
+  <div class="cm-coupon__tag"><span>🛒</span><strong>Compras inteligentes<br>começam aqui!</strong></div>
+</section>
 
-        <div id="empty-state" class="empty-state" hidden>
-          <div class="empty-state__mark">—</div><h3>Nada encontrado</h3><p>Tente outro termo ou limpe os filtros.</p><button id="empty-clear" class="primary-button" type="button">Ver tudo</button>
-        </div>
-      </section>
-    </section>
+<section class="cm-section cm-testimonials">
+  <div class="cm-section-head center"><span class="cm-kicker">PROVA SOCIAL</span><h2>O que nossos clientes dizem</h2><p>A confiança de quem já comprou com a gente.</p></div>
+  <div class="cm-reviews">
+    <article><div class="cm-review-top"><div class="cm-avatar">LF</div><div><strong>Lucas Ferreira</strong><span>★★★★★</span></div></div><p>“Entrega rápida e produto exatamente como anunciado. A experiência de compra foi muito tranquila.”</p></article>
+    <article><div class="cm-review-top"><div class="cm-avatar">AS</div><div><strong>Amanda Silva</strong><span>★★★★★</span></div></div><p>“Gostei muito da organização do site. Encontrei o que queria rápido e o atendimento foi ótimo.”</p></article>
+    <article><div class="cm-review-top"><div class="cm-avatar">RM</div><div><strong>Rafael Martins</strong><span>★★★★★</span></div></div><p>“Produto de qualidade, preço bom e entrega dentro do prazo. Voltaria a comprar.”</p></article>
+  </div>
+</section>
 
-    <section class="showcase-section" id="showcase-section">
-      <div class="showcase-copy">
-        <span class="eyebrow">TECHNOLOGY SHOWCASE</span>
-        <h2>Veja a tecnologia<br><em>em movimento.</em></h2>
-        <p>Uma apresentação visual dos produtos e do universo da Central Market, integrada ao mesmo visual escuro do catálogo.</p>
-        <a class="primary-button" href="#catalog-section">Explorar catálogo</a>
-      </div>
-      <div class="showcase-video">
-        <video autoplay muted loop playsinline preload="metadata" aria-label="Vídeo showcase de produtos">
-          <source src="https://res.cloudinary.com/pr44jyyy/video/upload/v1790281452/Technology_products_showcase_vid__20260924152326.mp4" type="video/mp4">
-        </video>
-      </div>
-    </section>
-  </main>
+<section class="cm-about" id="sobre"><div><span class="cm-kicker">SOBRE A CENTRALMARKET</span><h2>Uma experiência de compra feita para ser simples.</h2></div><p>Reunimos variedade, organização e praticidade em um só lugar para que você encontre produtos com menos esforço e mais confiança.</p></section>
+</main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <footer class="site-footer">
-    <div class="site-footer__inner">
-      <div class="footer-brand"><div class="brand__mark">CM</div><div><strong>Central Market</strong><span>TECH MARKET</span></div></div>
-      <div class="footer-column"><span class="footer-title">Navegação</span><a href="#catalog-section">Catálogo</a><a href="#showcase-section">Showcase</a><a href="./cart.html">Carrinho</a><a href="./admin.html">Painel</a></div>
-      <div class="footer-column"><span class="footer-title">Ajuda</span><a href="./faq.html">FAQ</a><a href="./contato.html">Contato</a><a href="./entrega.html">Entrega</a><a href="./trocas-devolucoes.html">Trocas e devoluções</a></div>
-      <div class="footer-column"><span class="footer-title">Informações</span><a href="./privacidade.html">Privacidade</a><a href="./termos.html">Termos de uso</a><span>Ofertas pertencem às respectivas lojas.</span></div>
-    </div>
-    <div class="site-footer__bottom"><span>Central Market · Tech Market</span><span>Consulte as condições de cada oferta antes da compra.</span></div>
-  </footer>
-
-  <script src="./plugins/core.js"></script>
-  <script src="./plugins/manifest.js"></script>
-  <script src="./app.js"></script>
-</body>
-</html>
+<footer class="cm-footer" id="contato">
+  <div class="cm-footer__grid">
+    <div><a class="cm-logo" href="./"><span class="cm-logo__icon">▱</span><strong>Central<span>Market</span></strong></a><p>Sua loja online de confiança.</p></div>
+    <div><h3>Links rápidos</h3><a href="#inicio">Início</a><a href="#produtos">Produtos</a><a href="#categorias">Categorias</a><a href="#sobre">Sobre Nós</a><a href="#contato">Contato</a></div>
+    <div><h3>Siga-nos</h3><div class="cm-social"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="TikTok">TK</a><a href="#" aria-label="YouTube">YT</a></div></div>
+    <div><h3>Formas de pagamento</h3><div class="cm-payments"><span>PIX</span><span>VISA</span><span>MC</span><span>ELO</span></div></div>
+  </div>
+  <div class="cm-footer__bottom">© 2025 CentralMarket. Todos os direitos reservados.</div>
+</footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="./plugins/core.js"></script><script src="./plugins/manifest.js"></script><script src="./app.js"></script>
+</body></html>
