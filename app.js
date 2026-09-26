@@ -127,12 +127,13 @@
 
   function productCard(product) {
     const inCart = state.cart[product.id] || 0;
-    const visualClass = product.visual.length > 3 ? 'product-card__visual--word' : '';
+    const visualClass = product.image ? 'has-image' : (product.visual.length > 3 ? 'product-card__visual--word' : '');
+    const image = product.image ? '<img class="product-card__visual-image" src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.name) + '" loading="lazy">' : '';
     return `
       <article class="product-card">
-        <div class="product-card__visual ${visualClass}" data-visual="${product.visual.charAt(0)}">
+        <div class="product-card__visual ${visualClass}" data-visual="${escapeHtml(product.visual.charAt(0))}">${image}
           ${product.badge ? `<span class="product-card__badge">${product.badge}</span>` : ''}
-          <span class="product-card__visual-text">${product.visual}</span>
+          <span class="product-card__visual-text">${escapeHtml(product.visual)}</span>
           <button class="favorite" type="button" aria-label="Favoritar ${product.name}">♡</button>
         </div>
         <div class="product-card__body">
@@ -228,13 +229,6 @@
   });
 
   $('empty-clear').addEventListener('click', () => $('clear-filters').click());
-  const cartButton = $('cart-button');
-  if (cartButton) {
-    cartButton.addEventListener('click', () => {
-      window.location.href = './cart.html';
-    });
-  }
-
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('sitealeatorio-cart') || '{}');
     const count = Object.values(cart).reduce((sum, quantity) => sum + Number(quantity || 0), 0);
@@ -243,6 +237,10 @@
   }
 
   updateCartCount();
+
+  function renderCart() {
+    updateCartCount();
+  }
 
   loadPlugins().catch(error => {
     console.error(error);
