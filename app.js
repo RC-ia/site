@@ -213,7 +213,8 @@
     renderProducts();
   });
 
-  $('clear-filters').addEventListener('click', () => {
+  const clearFilters = $('clear-filters');
+  if (clearFilters) clearFilters.addEventListener('click', () => {
     state.query = '';
     state.category = 'all';
     $('search-input').value = '';
@@ -221,7 +222,8 @@
     renderProducts();
   });
 
-  $('empty-clear').addEventListener('click', () => $('clear-filters').click());
+  const emptyClear = $('empty-clear');
+  if (emptyClear) emptyClear.addEventListener('click', () => clearFilters?.click());
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('sitealeatorio-cart') || '{}');
     const count = Object.values(cart).reduce((sum, quantity) => sum + Number(quantity || 0), 0);
