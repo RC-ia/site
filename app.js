@@ -46,6 +46,7 @@
   function renderExternalLinks() {
     const section = $('external-links-section');
     const grid = $('external-links-grid');
+    if (!section || !grid) return;
     if (!state.externalLinks.length) {
       section.hidden = true;
       return;
@@ -127,27 +128,19 @@
 
   function productCard(product) {
     const inCart = state.cart[product.id] || 0;
-    const visualClass = product.image ? 'has-image' : (product.visual.length > 3 ? 'product-card__visual--word' : '');
-    const image = product.image ? '<img class="product-card__visual-image" src="' + escapeHtml(product.image) + '" alt="' + escapeHtml(product.name) + '" loading="lazy">' : '';
     return `
-      <article class="product-card">
-        <div class="product-card__visual ${visualClass}" data-visual="${escapeHtml(product.visual.charAt(0))}">${image}
-          ${product.badge ? `<span class="product-card__badge">${product.badge}</span>` : ''}
-          <span class="product-card__visual-text">${escapeHtml(product.visual)}</span>
-          <button class="favorite" type="button" aria-label="Favoritar ${product.name}">♡</button>
+      <article class="cm-product-card">
+        <div class="cm-product-image">
+          <img src="${escapeHtml(product.image || '')}" alt="${escapeHtml(product.name)}" loading="lazy">
+          ${product.badge ? `<span class="cm-product-badge">${escapeHtml(product.badge)}</span>` : ''}
+          <button class="cm-favorite" type="button" aria-label="Favoritar ${escapeHtml(product.name)}">♡</button>
         </div>
-        <div class="product-card__body">
-          <div class="product-card__meta"><span>${categoryInfo(product.category).name}</span><span>★ ${product.rating.toFixed(1)}</span></div>
-          <h3>${product.name}</h3>
-          <p>${product.subtitle}</p>
-          <div class="product-card__spec">${product.meta}</div>
-          <div class="product-card__buy">
-            <div>
-              ${product.oldPrice ? `<del>${money(product.oldPrice)}</del>` : ''}
-              <strong>${money(product.price)}</strong>
-            </div>
-            <button class="add-button" data-add="${product.id}" type="button">${inCart ? `+${inCart}` : '+'} Adicionar</button>
-          </div>
+        <div class="cm-product-body">
+          <span class="cm-product-category">${escapeHtml(categoryInfo(product.category).name)}</span>
+          <h3>${escapeHtml(product.name)}</h3>
+          <div class="cm-rating"><span>★★★★★</span> <small>(${Number(product.reviews || 0)})</small></div>
+          <div class="cm-price">${money(product.price)}</div>
+          <button class="cm-add" data-add="${escapeHtml(product.id)}" type="button">${inCart ? `+${inCart} no carrinho` : 'Adicionar ao carrinho'}</button>
         </div>
       </article>
     `;
@@ -156,7 +149,7 @@
   function renderProducts() {
     const products = filteredProducts();
     $('product-grid').innerHTML = products.map(productCard).join('');
-    $('empty-state').hidden = products.length !== 0 || state.externalLinks.length !== 0;
+    $('empty-state').hidden = products.length !== 0;
     $('result-count').textContent = `${products.length} ${products.length === 1 ? 'item' : 'itens'}`;
     $('catalog-title').textContent = state.category === 'all' ? 'Todos os produtos' : categoryInfo(state.category).name;
     renderExternalLinks();
@@ -241,6 +234,12 @@
   function renderCart() {
     updateCartCount();
   }
+
+  const couponCopy = $('coupon-copy');
+  if (couponCopy) couponCopy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText('BEMVINDO'); showToast('Cupom BEMVINDO copiado'); }
+    catch { showToast('Cupom: BEMVINDO'); }
+  });
 
   loadPlugins().catch(error => {
     console.error(error);
